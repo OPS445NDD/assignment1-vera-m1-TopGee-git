@@ -28,8 +28,24 @@ def day_of_week(year: int, month: int, date: int) -> str:
 
 
 def mon_max(month:int, year:int) -> int:
-    "returns the maximum day for a given month. Includes leap year check"
-    ...
+    #returns the maximum day for a given month. Includes leap year check
+   
+    
+    #Return the maximum number of days in the given month.
+   
+    if month == 2:
+        if leap_year(year):
+            return 29
+        else:
+            return 28
+
+    month_days = {
+        1:31, 3:31, 4:30,
+        5:31, 6:30, 7:31, 8:31,
+        9:30, 10:31, 11:30, 12:31
+    }
+
+    return month_days[month]
 
 def after(date: str) -> str:
     '''
@@ -43,26 +59,15 @@ def after(date: str) -> str:
     year = int(str_year)
     month = int(str_month)
     day = int(str_day)
-    lyear = year % 4
-    if lyear == 0:
-        feb_max = 29 # this is a leap year
-    else:
-        feb_max = 28 # this is not a leap year
+    
+    
 
-    lyear = year % 100
-    if lyear == 0:
-        feb_max = 28 # this is not a leap year
-
-    lyear = year % 400
-    if lyear == 0:
-        feb_max = 29 # this is a leap year
-
-    mon_max = { 1:31, 2:feb_max, 3:31, 4:30, 5:31, 6:30, 7:31, 8:31, 9:30, 10:31, 11:30, 12:31}
+    
 
     tmp_day = day + 1  # next day
 
-    if tmp_day > mon_max[month]:
-        to_day = tmp_day % mon_max[month]  # if tmp_day > this month's max, reset to 1 
+    if tmp_day > mon_max(month, year):
+        to_day = tmp_day % mon_max(month, year)  # if tmp_day > this month's max, reset to 1 
         tmp_month = month + 1
     else:
         to_day = tmp_day
@@ -86,7 +91,19 @@ def usage():
 
 def leap_year(year: int) -> bool:
     "return True if the year is a leap year"
-    ...
+   
+    #Return True if year is a leap year, otherwise False.
+    
+    if year % 400 == 0:
+        return True
+
+    elif year % 100 == 0:
+        return False
+
+    elif year % 4 == 0:
+        return True
+    else:
+        return False
 
 def valid_date(date: str) -> bool:
     "check validity of date and return True if valid"
@@ -97,4 +114,7 @@ def day_count(start_date: str, stop_date: str) -> int:
     ...
 
 if __name__ == "__main__":
-    ...
+    print(after("2025-02-26"))
+    print(after("2024-02-28"))
+    print(after("2025-02-28"))
+    print(after("2023-12-31"))
